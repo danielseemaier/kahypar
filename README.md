@@ -84,6 +84,11 @@ Its algorithms and detailed experimental results are presented in several [resea
 
    KaHyPar uses direct k-way V-cycles to try to improve an existing partition specified via parameter `--part-file=</path/to/file>`. The maximum number of V-cycles can be controlled via parameter `--vcycles=`. 
 
+- Acyclic Hypergraph Partitioning:
+
+   KaHyPar can partition directed acyclic hypergraphs (DAHs) such that the quotient graph of the partition is acyclic. 
+   Currently, only DAHs where each hyperedge contains at most one head pin are supported.
+   To use this feature, enable it during compile time by passing `-DKAHYPAR_ENABLE_DHGP=On` to CMake, then use the command line option `--mode=acyclic`.
    
 ### Experimental Results
 We use the [*performance profiles*](https://link.springer.com/article/10.1007/s101070100263) to compare KaHyPar to other partitioning algorithms in terms of solution quality.

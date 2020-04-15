@@ -41,6 +41,10 @@
 #include "kahypar/partition/refinement/kway_fm_km1_refiner.h"
 #include "kahypar/partition/refinement/policies/fm_stop_policy.h"
 
+#ifdef KAHYPAR_ENABLE_DHGP
+#include "kahypar/partition/dhgp/coarsening/acyclic_coarsener.h"
+#endif // KAHYPAR_ENABLE_DHGP
+
 namespace kahypar {
 using CoarsenerFactory = meta::Factory<CoarseningAlgorithm,
                                        ICoarsener* (*)(Hypergraph&, const Context&,
@@ -87,4 +91,11 @@ using TwoWayHyperFlowCutterFactoryDispatcher = meta::StaticMultiDispatchFactory<
 using KWayHyperFlowCutterFactoryDispatcher = meta::StaticMultiDispatchFactory<KWayHyperFlowCutterRefiner,
                                                                               IRefiner,
                                                                               meta::Typelist<FlowExecutionPolicyClasses> >;
+
+#ifdef KAHYPAR_ENABLE_DHGP
+using dhgp::AcyclicCoarsener;
+using AcyclicCoarseningDispatcher = meta::StaticMultiDispatchFactory<AcyclicCoarsener,
+                                                                     ICoarsener,
+                                                                     RatingPolicies>;
+#endif // KAHYPAR_ENABLE_DHGP
 }  // namespace kahypar

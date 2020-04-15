@@ -88,7 +88,7 @@ Its algorithms and detailed experimental results are presented in several [resea
 
    KaHyPar can partition directed acyclic hypergraphs (DAHs) such that the quotient graph of the partition is acyclic. 
    Currently, only DAHs where each hyperedge contains at most one head pin are supported.
-   To use this feature, enable it during compile time by passing `-DKAHYPAR_ENABLE_DHGP=On` to CMake, then use the command line option `--mode=acyclic`.
+   To use this feature, enable it during compile time by passing `-DKAHYPAR_ENABLE_DHGP=On` to CMake, then use the command line option `--mode=dhgp`.
    
 ### Experimental Results
 We use the [*performance profiles*](https://link.springer.com/article/10.1007/s101070100263) to compare KaHyPar to other partitioning algorithms in terms of solution quality.

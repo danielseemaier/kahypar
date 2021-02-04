@@ -122,11 +122,18 @@ enum class InitialPartitionerAlgorithm : uint8_t {
   bfs,
   random,
   lp,
+  bin_packing,
   pool,
 #ifdef KAHYPAR_ENABLE_DHGP
   acyclic_topord,
   acyclic_undirected,
 #endif // KAHYPAR_ENABLE_DHGP
+  UNDEFINED
+};
+
+enum class BinPackingAlgorithm : uint8_t {
+  worst_fit,
+  first_fit,
   UNDEFINED
 };
 
@@ -380,6 +387,7 @@ static std::ostream& operator<< (std::ostream& os, const InitialPartitionerAlgor
     case InitialPartitionerAlgorithm::bfs: return os << "bfs";
     case InitialPartitionerAlgorithm::random: return os << "random";
     case InitialPartitionerAlgorithm::lp: return os << "lp";
+    case InitialPartitionerAlgorithm::bin_packing: return os << "bin_packing";
     case InitialPartitionerAlgorithm::pool: return os << "pool";
 #ifdef KAHYPAR_ENABLE_DHGP
     case InitialPartitionerAlgorithm::acyclic_topord: return os << "acyclic_topord";
@@ -422,6 +430,16 @@ static std::ostream& operator<< (std::ostream& os, const FlowExecutionMode& mode
       // omit default case to trigger compiler warning for missing cases
   }
   return os << static_cast<uint8_t>(mode);
+}
+
+std::ostream& operator<< (std::ostream& os, const BinPackingAlgorithm& bp_algo) {
+  switch (bp_algo) {
+    case BinPackingAlgorithm::worst_fit: return os << "worst_fit";
+    case BinPackingAlgorithm::first_fit: return os << "first_fit";
+    case BinPackingAlgorithm::UNDEFINED: return os << "UNDEFINED";
+      // omit default case to trigger compiler warning for missing cases
+  }
+  return os << static_cast<uint8_t>(bp_algo);
 }
 
 static EvoMutateStrategy mutateStrategyFromString(const std::string& strat) {
@@ -612,7 +630,7 @@ static InitialPartitionerAlgorithm initialPartitioningAlgorithmFromString(const 
   return InitialPartitionerAlgorithm::greedy_global;
 }
 
-static InitialPartitioningTechnique inititalPartitioningTechniqueFromString(const std::string& technique) {
+static InitialPartitioningTechnique initialPartitioningTechniqueFromString(const std::string& technique) {
   if (technique == "flat") {
     return InitialPartitioningTechnique::flat;
   } else if (technique == "multi") {
@@ -668,4 +686,14 @@ static FlowExecutionMode flowExecutionPolicyFromString(const std::string& mode) 
   return FlowExecutionMode::exponential;
 }
 
+static BinPackingAlgorithm binPackingAlgorithmFromString(const std::string& type) {
+  if (type == "worst_fit") {
+    return BinPackingAlgorithm::worst_fit;
+  } else if (type == "first_fit") {
+    return BinPackingAlgorithm::first_fit;
+  }
+  LOG << "Illegal option:" << type;
+  exit(0);
+  return BinPackingAlgorithm::worst_fit;
+}
 }  // namespace kahypar
